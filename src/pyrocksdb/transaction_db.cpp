@@ -4,10 +4,16 @@
 
 namespace py = pybind11;
 
+
 class TransactionWrapper {
   public:
-    TransactionWrapper(Transaction* p){txn = p;}
-    ~TransactionWrapper(){delete txn;}
+    TransactionWrapper(Transaction* p) {
+        txn = p;
+    }
+
+    ~TransactionWrapper() {
+    }
+
     std::unique_ptr<Blob> Get(const ReadOptions& options, const Slice& key) {
       std::unique_ptr<Blob> blob(new Blob());
       blob->status = txn->Get(options, key, &blob->data);
@@ -64,8 +70,8 @@ class PyTransactionDB {
   public:
 
     PyTransactionDB(): db_ptr(nullptr) {
-      
     }
+
     ~PyTransactionDB() {
       if (db_ptr != nullptr) {
         delete db_ptr;

@@ -1,7 +1,10 @@
-import pyrocksdb
-import tempfile
-import pytest
 import os
+import tempfile
+
+import pytest
+
+import pyrocksdb
+
 
 def test_options():
     opts = pyrocksdb.Options()
@@ -426,6 +429,18 @@ def test_merge_operator():
     #  while (True):
         #  pass
 
-
-
     #  assert blob.data == b'5'
+
+
+def test_transaction_release_db_twice():
+    opts = pyrocksdb.Options()
+    opts.create_if_missing = True
+    txn_db_opts = pyrocksdb.TransactionDBOptions()
+    tmp = tempfile.TemporaryDirectory()
+    db = pyrocksdb.transaction_db()
+    db.open(opts, txn_db_opts, tmp.name)
+    wopts = pyrocksdb.WriteOptions()
+    txn = db.begin_transaction(wopts)
+
+    del db
+    del txn  # will crash if txn tries to release the db object again
