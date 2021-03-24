@@ -3,7 +3,9 @@ dist: trusty
 language: generic
 services:
   - docker
-
+arch:
+  - amd64
+  - arm64
 cache:
   directories:
     - ~/.cache/pip
