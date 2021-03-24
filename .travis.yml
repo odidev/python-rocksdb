@@ -13,7 +13,7 @@ cache:
 install:
       docker build . -t ci-image;
 script:
-      docker run -v ~/.cache/pip:/home/tester/.cache/pip -v $(pwd):/home/tester/src ci-image:latest tox -e ${TOXENV} ;
+      sudo docker run -v ~/.cache/pip:/home/tester/.cache/pip -v $(pwd):/home/tester/src ci-image:latest tox -e ${TOXENV} ;
 env:
       - TOXENV=py27
       - TOXENV=py36
